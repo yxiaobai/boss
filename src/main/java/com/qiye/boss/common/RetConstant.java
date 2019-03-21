@@ -23,4 +23,8 @@ public class RetConstant {
     public static final int CODE_PARAM_ERR = 201;
 
     public static final String PARAM_USER_ERR = "账号或密码错误，请重新输入！";
+
+    public static final int CODE_NORIGHT = 202;
+
+    public static final String MSG_NORIGHT= "当前用户无此权限";
 }

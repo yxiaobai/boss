@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.qiye.boss.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.qiye.boss.model.User">
+<mapper namespace="com.qiye.boss.mapper.FunctionMapper">
+  <resultMap id="BaseResultMap" type="com.qiye.boss.model.Function">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="sex" jdbcType="INTEGER" property="sex" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="job_mo" jdbcType="VARCHAR" property="jobMo" />
-    <result column="work_place" jdbcType="VARCHAR" property="workPlace" />
-    <result column="deptId" jdbcType="VARCHAR" property="deptid" />
+    <result column="functionCode" jdbcType="VARCHAR" property="functioncode" />
+    <result column="functionName" jdbcType="VARCHAR" property="functionname" />
+    <result column="parentId" jdbcType="INTEGER" property="parentid" />
+    <result column="type" jdbcType="INTEGER" property="type" />
     <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="in_time" jdbcType="TIMESTAMP" property="inTime" />
     <result column="creator" jdbcType="INTEGER" property="creator" />
     <result column="update_user" jdbcType="INTEGER" property="updateUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -78,16 +72,16 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, user_name, password, real_name, sex, phone, email, job_mo, work_place, deptId, 
-    status, in_time, creator, update_user, create_time, update_time
+    id, functionCode, functionName, parentId, type, status, creator, update_user, create_time, 
+    update_time
   </sql>
-  <select id="selectByExample" parameterType="com.qiye.boss.model.UserExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.qiye.boss.model.FunctionExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from t_user
+    from t_function
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -98,74 +92,52 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from t_user
+    from t_function
     where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from t_user
+    delete from t_function
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.qiye.boss.model.UserExample">
-    delete from t_user
+  <delete id="deleteByExample" parameterType="com.qiye.boss.model.FunctionExample">
+    delete from t_function
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.qiye.boss.model.User">
+  <insert id="insert" parameterType="com.qiye.boss.model.Function">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_user (user_name, password, real_name, 
-      sex, phone, email, 
-      job_mo, work_place, deptId, 
-      status, in_time, creator, 
+    insert into t_function (functionCode, functionName, parentId, 
+      type, status, creator, 
       update_user, create_time, update_time
       )
-    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
-      #{sex,jdbcType=INTEGER}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
-      #{jobMo,jdbcType=VARCHAR}, #{workPlace,jdbcType=VARCHAR}, #{deptid,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{inTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=INTEGER}, 
+    values (#{functioncode,jdbcType=VARCHAR}, #{functionname,jdbcType=VARCHAR}, #{parentid,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, #{creator,jdbcType=INTEGER}, 
       #{updateUser,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.qiye.boss.model.User">
+  <insert id="insertSelective" parameterType="com.qiye.boss.model.Function">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
       SELECT LAST_INSERT_ID()
     </selectKey>
-    insert into t_user
+    insert into t_function
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="userName != null">
-        user_name,
+      <if test="functioncode != null">
+        functionCode,
       </if>
-      <if test="password != null">
-        password,
+      <if test="functionname != null">
+        functionName,
       </if>
-      <if test="realName != null">
-        real_name,
+      <if test="parentid != null">
+        parentId,
       </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="jobMo != null">
-        job_mo,
-      </if>
-      <if test="workPlace != null">
-        work_place,
-      </if>
-      <if test="deptid != null">
-        deptId,
+      <if test="type != null">
+        type,
       </if>
       <if test="status != null">
         status,
-      </if>
-      <if test="inTime != null">
-        in_time,
       </if>
       <if test="creator != null">
         creator,
@@ -181,38 +153,20 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="userName != null">
-        #{userName,jdbcType=VARCHAR},
+      <if test="functioncode != null">
+        #{functioncode,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        #{password,jdbcType=VARCHAR},
+      <if test="functionname != null">
+        #{functionname,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null">
-        #{realName,jdbcType=VARCHAR},
+      <if test="parentid != null">
+        #{parentid,jdbcType=INTEGER},
       </if>
-      <if test="sex != null">
-        #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="jobMo != null">
-        #{jobMo,jdbcType=VARCHAR},
-      </if>
-      <if test="workPlace != null">
-        #{workPlace,jdbcType=VARCHAR},
-      </if>
-      <if test="deptid != null">
-        #{deptid,jdbcType=VARCHAR},
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
-      </if>
-      <if test="inTime != null">
-        #{inTime,jdbcType=TIMESTAMP},
       </if>
       <if test="creator != null">
         #{creator,jdbcType=INTEGER},
@@ -228,50 +182,32 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.qiye.boss.model.UserExample" resultType="java.lang.Long">
-    select count(*) from t_user
+  <select id="countByExample" parameterType="com.qiye.boss.model.FunctionExample" resultType="java.lang.Long">
+    select count(*) from t_function
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update t_user
+    update t_function
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.userName != null">
-        user_name = #{record.userName,jdbcType=VARCHAR},
+      <if test="record.functioncode != null">
+        functionCode = #{record.functioncode,jdbcType=VARCHAR},
       </if>
-      <if test="record.password != null">
-        password = #{record.password,jdbcType=VARCHAR},
+      <if test="record.functionname != null">
+        functionName = #{record.functionname,jdbcType=VARCHAR},
       </if>
-      <if test="record.realName != null">
-        real_name = #{record.realName,jdbcType=VARCHAR},
+      <if test="record.parentid != null">
+        parentId = #{record.parentid,jdbcType=INTEGER},
       </if>
-      <if test="record.sex != null">
-        sex = #{record.sex,jdbcType=INTEGER},
-      </if>
-      <if test="record.phone != null">
-        phone = #{record.phone,jdbcType=VARCHAR},
-      </if>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
-      </if>
-      <if test="record.jobMo != null">
-        job_mo = #{record.jobMo,jdbcType=VARCHAR},
-      </if>
-      <if test="record.workPlace != null">
-        work_place = #{record.workPlace,jdbcType=VARCHAR},
-      </if>
-      <if test="record.deptid != null">
-        deptId = #{record.deptid,jdbcType=VARCHAR},
+      <if test="record.type != null">
+        type = #{record.type,jdbcType=INTEGER},
       </if>
       <if test="record.status != null">
         status = #{record.status,jdbcType=INTEGER},
-      </if>
-      <if test="record.inTime != null">
-        in_time = #{record.inTime,jdbcType=TIMESTAMP},
       </if>
       <if test="record.creator != null">
         creator = #{record.creator,jdbcType=INTEGER},
@@ -291,19 +227,13 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update t_user
+    update t_function
     set id = #{record.id,jdbcType=INTEGER},
-      user_name = #{record.userName,jdbcType=VARCHAR},
-      password = #{record.password,jdbcType=VARCHAR},
-      real_name = #{record.realName,jdbcType=VARCHAR},
-      sex = #{record.sex,jdbcType=INTEGER},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR},
-      job_mo = #{record.jobMo,jdbcType=VARCHAR},
-      work_place = #{record.workPlace,jdbcType=VARCHAR},
-      deptId = #{record.deptid,jdbcType=VARCHAR},
+      functionCode = #{record.functioncode,jdbcType=VARCHAR},
+      functionName = #{record.functionname,jdbcType=VARCHAR},
+      parentId = #{record.parentid,jdbcType=INTEGER},
+      type = #{record.type,jdbcType=INTEGER},
       status = #{record.status,jdbcType=INTEGER},
-      in_time = #{record.inTime,jdbcType=TIMESTAMP},
       creator = #{record.creator,jdbcType=INTEGER},
       update_user = #{record.updateUser,jdbcType=INTEGER},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
@@ -312,41 +242,23 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.qiye.boss.model.User">
-    update t_user
+  <update id="updateByPrimaryKeySelective" parameterType="com.qiye.boss.model.Function">
+    update t_function
     <set>
-      <if test="userName != null">
-        user_name = #{userName,jdbcType=VARCHAR},
+      <if test="functioncode != null">
+        functionCode = #{functioncode,jdbcType=VARCHAR},
       </if>
-      <if test="password != null">
-        password = #{password,jdbcType=VARCHAR},
+      <if test="functionname != null">
+        functionName = #{functionname,jdbcType=VARCHAR},
       </if>
-      <if test="realName != null">
-        real_name = #{realName,jdbcType=VARCHAR},
+      <if test="parentid != null">
+        parentId = #{parentid,jdbcType=INTEGER},
       </if>
-      <if test="sex != null">
-        sex = #{sex,jdbcType=INTEGER},
-      </if>
-      <if test="phone != null">
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="jobMo != null">
-        job_mo = #{jobMo,jdbcType=VARCHAR},
-      </if>
-      <if test="workPlace != null">
-        work_place = #{workPlace,jdbcType=VARCHAR},
-      </if>
-      <if test="deptid != null">
-        deptId = #{deptid,jdbcType=VARCHAR},
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
-      </if>
-      <if test="inTime != null">
-        in_time = #{inTime,jdbcType=TIMESTAMP},
       </if>
       <if test="creator != null">
         creator = #{creator,jdbcType=INTEGER},
@@ -363,19 +275,13 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.qiye.boss.model.User">
-    update t_user
-    set user_name = #{userName,jdbcType=VARCHAR},
-      password = #{password,jdbcType=VARCHAR},
-      real_name = #{realName,jdbcType=VARCHAR},
-      sex = #{sex,jdbcType=INTEGER},
-      phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
-      job_mo = #{jobMo,jdbcType=VARCHAR},
-      work_place = #{workPlace,jdbcType=VARCHAR},
-      deptId = #{deptid,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKey" parameterType="com.qiye.boss.model.Function">
+    update t_function
+    set functionCode = #{functioncode,jdbcType=VARCHAR},
+      functionName = #{functionname,jdbcType=VARCHAR},
+      parentId = #{parentid,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
-      in_time = #{inTime,jdbcType=TIMESTAMP},
       creator = #{creator,jdbcType=INTEGER},
       update_user = #{updateUser,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},

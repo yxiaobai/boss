@@ -4,8 +4,6 @@ import com.qiye.boss.dto.requestDto.BasePageRequestDto;
 import com.qiye.boss.model.User;
 import com.qiye.boss.model.UserExample;
 import java.util.List;
-
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {

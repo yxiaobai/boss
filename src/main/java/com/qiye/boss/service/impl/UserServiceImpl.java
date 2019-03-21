@@ -1,11 +1,17 @@
 package com.qiye.boss.service.impl;
 
+import com.qiye.boss.dto.EnumTypeDto;
+import com.qiye.boss.dto.MenuTreeDto;
 import com.qiye.boss.dto.requestDto.BasePageRequestDto;
+import com.qiye.boss.dto.requestDto.LoginRequestDto;
 import com.qiye.boss.dto.responseDto.BasePageResponseDto;
+import com.qiye.boss.dto.responseDto.LoginResponseDto;
 import com.qiye.boss.mapper.UserMapper;
-import com.qiye.boss.model.User;
+import com.qiye.boss.mapper.UserRoleFunctionMapper;
+import com.qiye.boss.model.*;
 import com.qiye.boss.service.UserService;
 import com.qiye.boss.utils.ApiResult;
+import com.qiye.boss.utils.MD5Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +26,49 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserRoleFunctionMapper userRoleFunctionMapper;
+
+    /**
+     * 用户登陆
+     * @param requestDto
+     * @return
+     */
+    @Override
+    public ApiResult<LoginResponseDto> login(LoginRequestDto requestDto) {
+        ApiResult<LoginResponseDto> result = ApiResult.makeSuccessResult();
+        LoginResponseDto responseDto = new LoginResponseDto();
+        UserExample example = new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        criteria.andUserNameEqualTo(requestDto.getUserName());
+        criteria.andPasswordEqualTo(MD5Utils.GetMD5Code(requestDto.getPassword()));
+        List<User> userList = userMapper.selectByExample(example);
+        if (userList.size()>0){
+            User user = userList.get(0);
+            if (EnumTypeDto.KeYong.getNum()==user.getStatus()){
+                UserRoleFunctionExample example1 = new UserRoleFunctionExample();
+                UserRoleFunctionExample.Criteria criteria1 = example1.createCriteria();
+                criteria1.andUseridEqualTo(user.getId());
+                List<UserRoleFunction> userRoleFunctions = userRoleFunctionMapper.selectByExample(example1);
+                if (userRoleFunctions.size()>0){
+                    responseDto.setUserId(user.getId());
+                    responseDto.setUserName(user.getUserName());
+                    responseDto.setRealName(user.getRealName());
+                    MenuTreeDto menuTreeDto = new MenuTreeDto();
+                    responseDto.setMenuTreeDtoList(menuTreeDto.initMenuTree(userRoleFunctions));
+                    responseDto.setOperRightMap(menuTreeDto.initRightOpMap(userRoleFunctions));
+                    result.setData(responseDto);
+                }else {
+                    result.setMsg("用户未被激活,请联系管理员!");
+                }
+            }else {
+                result.setMsg("用户已被禁用，请联系管理员!");
+            }
+        }else {
+            result.setMsg("用户名或密码输入有误!");
+        }
+        return result;
+    }
 
     /**
      * 分页获取数据

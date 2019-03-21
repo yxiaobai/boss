@@ -36,6 +36,15 @@ public class ApiResult<TData> {
         return result;
     }
 
+    public static ApiResult errAuth(String errAuthString) {
+        ApiResult<String> result = ApiResult.makeSuccessResult();
+        result.setRet(RetConstant.CODE_NORIGHT);
+        result.setData(null);
+        result.setMsg(RetConstant.MSG_NORIGHT);
+        result.setClientMsg("");
+        return result;
+    }
+
     public int getRet() {
         return ret;
     }

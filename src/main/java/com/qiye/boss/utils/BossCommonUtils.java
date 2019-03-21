@@ -63,7 +63,17 @@ public class BossCommonUtils {
         }
         return true;
     }
-
+    public static String getAuthWords( String url){
+        if (url.indexOf("auth_")!=-1){
+            String[] paths = url.split("/");
+            for (String path:paths) {
+                if (path.indexOf("auth_")!=-1){
+                    return path.split("_")[1];
+                }
+            }
+        }
+        return "";
+    }
     //获取上个月
     public static String getLastMonth() {
         LocalDate today = LocalDate.now();

@@ -50,8 +50,8 @@
                selectByExampleQueryId="false">
         </table>-->
         <!--这样会同时生成  example  Criteria  方法     如果不需要用上面的就可以-->
-        <table tableName="t_user" domainObjectName="User">
-            <property name="useActualColumnNames" value="true" />
+        <table tableName="v_user_role_function" domainObjectName="UserRoleFunction">
+            <property name="useActualColumnNames" value="FALSE" />
             <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
             <!--这样会把text等特大类型的字段转换成String类型-->
             <!--<columnOverride column="xxxxx" jdbcType="VARCHAR" />-->

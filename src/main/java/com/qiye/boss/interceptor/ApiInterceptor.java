@@ -39,7 +39,7 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
                 return false;
             }
         }
-        if (!BossCommonUtils.getAuthWords(requestUrl).equals("")){
+        /*if (!BossCommonUtils.getAuthWords(requestUrl).equals("")){
             //需要进行权限验证
             //验证的权限类型
             //主要针对TYPE=2的操作
@@ -56,7 +56,7 @@ public class ApiInterceptor extends HandlerInterceptorAdapter {
 //                String afterUrl = BossCommonUtils.getAuthRightUrl(requestUrl);
 //                response.sendRedirect(afterUrl);
 //            }
-        }
+        }*/
         return true;
     }
 

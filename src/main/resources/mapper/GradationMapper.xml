@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qiye.boss.mapper.GradationMapper">
+  <resultMap id="BaseResultMap" type="com.qiye.boss.model.Gradation">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="productId" jdbcType="INTEGER" property="productId" />
+    <result column="role" jdbcType="VARCHAR" property="role" />
+    <result column="direct" jdbcType="INTEGER" property="direct" />
+    <result column="gradation" jdbcType="INTEGER" property="gradation" />
+    <result column="identical" jdbcType="INTEGER" property="identical" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, productId, role, direct, gradation, identical
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_gradation
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_gradation
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.qiye.boss.model.Gradation">
+    insert into t_gradation (id, productId, role, 
+      direct, gradation, identical
+      )
+    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{role,jdbcType=VARCHAR}, 
+      #{direct,jdbcType=INTEGER}, #{gradation,jdbcType=INTEGER}, #{identical,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.qiye.boss.model.Gradation">
+    insert into t_gradation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="productId != null">
+        productId,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+      <if test="direct != null">
+        direct,
+      </if>
+      <if test="gradation != null">
+        gradation,
+      </if>
+      <if test="identical != null">
+        identical,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="direct != null">
+        #{direct,jdbcType=INTEGER},
+      </if>
+      <if test="gradation != null">
+        #{gradation,jdbcType=INTEGER},
+      </if>
+      <if test="identical != null">
+        #{identical,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.qiye.boss.model.Gradation">
+    update t_gradation
+    <set>
+      <if test="productId != null">
+        productId = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=VARCHAR},
+      </if>
+      <if test="direct != null">
+        direct = #{direct,jdbcType=INTEGER},
+      </if>
+      <if test="gradation != null">
+        gradation = #{gradation,jdbcType=INTEGER},
+      </if>
+      <if test="identical != null">
+        identical = #{identical,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.qiye.boss.model.Gradation">
+    update t_gradation
+    set productId = #{productId,jdbcType=INTEGER},
+      role = #{role,jdbcType=VARCHAR},
+      direct = #{direct,jdbcType=INTEGER},
+      gradation = #{gradation,jdbcType=INTEGER},
+      identical = #{identical,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectListByProductId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_gradation
+    where productId = #{productId,jdbcType=INTEGER}
+  </select>
+  <select id="getGradationList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_gradation
+  </select>
+</mapper>

@@ -110,6 +110,7 @@
     from t_gradation
     where productId = #{productId,jdbcType=INTEGER}
   </select>
+
   <select id="getGradationList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

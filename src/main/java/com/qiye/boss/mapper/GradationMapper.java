@@ -17,7 +17,7 @@ public interface GradationMapper {
 
     int updateByPrimaryKey(Gradation record);
 
-    List<Gradation> selectListByProductId();
+    List<Gradation> selectListByProductId(String productId);
 
     List<Gradation> getGradationList();
 }

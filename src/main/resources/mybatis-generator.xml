@@ -44,18 +44,19 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!--生成对应表及类名-->
-        <!--<table tableName="T_user" domainObjectName="TUser"
+        <table tableName="t_gradation" domainObjectName="Gradation"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
-        </table>-->
+            <property name="useActualColumnNames" value="TRUE" />
+        </table>
         <!--这样会同时生成  example  Criteria  方法     如果不需要用上面的就可以-->
-        <table tableName="v_user_role_function" domainObjectName="UserRoleFunction">
+        <!--<table tableName="v_user_role_function" domainObjectName="UserRoleFunction">
             <property name="useActualColumnNames" value="FALSE" />
             <generatedKey column="ID" sqlStatement="MySql" identity="true"/>
-            <!--这样会把text等特大类型的字段转换成String类型-->
-            <!--<columnOverride column="xxxxx" jdbcType="VARCHAR" />-->
-        </table>
+            &lt;!&ndash;这样会把text等特大类型的字段转换成String类型&ndash;&gt;
+            &lt;!&ndash;<columnOverride column="xxxxx" jdbcType="VARCHAR" />&ndash;&gt;
+        </table>-->
 
     </context>
 </generatorConfiguration>
